@@ -1,0 +1,37 @@
+version: '3'
+
+networks:
+  web:
+    external: true
+
+services:
+  api:
+    build: ./cage-api
+    image: cage-api:latest
+    restart: always
+
+    labels:
+      - "treafik.enable=true"
+      - "traefik.http.routers.cage-api.entrypoints=http"
+      - "traefik.http.routers.cage-api.rule=Host(`api.cage.romplabs.com`)"
+      - "traefik.http.services.cage-api.loadbalancer.server.port=3000"
+      - "traefik.docker.network=web"
+
+    networks:
+      - web
+
+  app:
+    build: ./cage-app
+    image: cage-app:latest
+    restart: always
+    depends_on:
+      - 'api'
+    labels:
+      - "treafik.enable=true"
+      - "traefik.http.routers.cage-app.entrypoints=http"
+      - "traefik.http.routers.cage-app.rule=Host(`cage.romplabs.com`)"
+      - "traefik.http.services.cage-app.loadbalancer.server.port=3000"
+      - "traefik.docker.network=web"
+
+    networks:
+      - web
