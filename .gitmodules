@@ -1,6 +1,6 @@
 [submodule "cage-app"]
 	path = cage-app
-	url = git@github.com:utdcsc/cage-app
+	url = git@github.com:utdcs/cage-app
 [submodule "cage-api"]
 	path = cage-api
 	url = git@github.com:utdcs/cage-api
