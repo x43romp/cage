@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 networks:
   web:
@@ -9,6 +9,11 @@ services:
     build: ./cage-api
     image: cage-api:latest
     restart: always
+
+    environment:
+      - "MONGODB=mongodb+srv://romp:GearCrypt0@gearcrypt0.mo1qvtz.mongodb.net/cage?retryWrites=true&w=majority"
+      - "JWT_SECRET=INSERT_SECRET_HERE"
+      - "JWT_EXPIRE=1200s"
 
     labels:
       - "treafik.enable=true"
@@ -25,7 +30,11 @@ services:
     image: cage-app:latest
     restart: always
     depends_on:
-      - 'api'
+      - "api"
+    environment:
+      - "API=http://api.cage.romplabs.com/"
+      - "NEXTAUTH_URL=http://cage.romplabs.com/"
+      - "NEXTAUTH_SECRET=E6i0Oxk2KJ1VjUeUyCdeuz0ZR3ZH5LtFSnrZv8huuj8=="
     labels:
       - "treafik.enable=true"
       - "traefik.http.routers.cage-app.entrypoints=http"
